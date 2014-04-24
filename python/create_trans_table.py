@@ -58,14 +58,23 @@ def search_table(cid):
     count = cur.execute('select * from trans where cid = "%s"'%(cid))
     result = cur.fetchmany(count)
     return result
+
+def build_index():
+    conn.select_db('shopping')
+    cur = conn.cursor()
+    count = cur.execute('create index cindex using btree on trans(cid);')
+    result = cur.fetchmany(count)
+    return result
+    
     
 if __name__ == '__main__':
     print "hello"
 
     data_position_conf = config("../conf/data_position.conf")
-    #drop_table()
-    #create_db()
-    #create_trans_table()
-    #insert_trans(data_position_conf)
-    result = search_table('86246')
-    print result[0]
+    drop_table()
+    create_db()
+    create_trans_table()
+    insert_trans(data_position_conf)
+    build_index()
+    #result = search_table('86246')
+    #print result[0]
