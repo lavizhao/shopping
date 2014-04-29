@@ -104,6 +104,11 @@ def diff_days(s1,s2):
     b = datetime.strptime(s2, date_format)
     delta = b - a
     return delta.days
+
+def get_weekday(day):
+    date_format = "%Y-%m-%d"
+    s_day = datetime.strptime(day, date_format)
+    return s_day.isoweekday()
         
 #先给每个用户建一个空类
 #ctype 代表数据集种类，train，test两种
@@ -222,7 +227,12 @@ def get_customer_class(conf,ctype,offers):
             bought_brand_category_10 = 0
 
             #feature 29 :平均花钱数目
-            avg_amount = 0 
+            avg_amount = 0
+            
+            #feature 32,33,34:关于周末
+            bought_in_saturday = 0
+            bought_in_sunday = 0
+            bought_in_weekend = 0
             
             for one_search in result:
                 date_diff_days = diff_days(one_search[7],customer_date)
@@ -286,6 +296,16 @@ def get_customer_class(conf,ctype,offers):
                         bought_company_category_brand_120 += 1
 
             #avg_amount /= (len(result)+1)
+                
+                weekday = get_weekday(one_search[7])
+                if weekday == 6:
+                    bought_in_saturday += 1
+                    bought_in_weekend += 1
+                elif weekday == 7:
+                    bought_in_sunday += 1
+                    bought_in_weekend += 1
+                elif weekday == 5:
+                    bought_in_weekend += 1
 
             #feature 4,5: offer value offer quantity
                     
@@ -302,6 +322,7 @@ def get_customer_class(conf,ctype,offers):
                                      bought_company_category_brand_5,bought_company_category_brand_10,bought_company_category_brand_15,\
                                      bought_company_category_brand_30,bought_company_category_brand_60,\
                                      bought_company_category_brand_90,bought_company_category_brand_120,\
+                                     bought_in_weekend\
                                  ])+"\n")
             a += 1
             if a % 10000 == 0:
