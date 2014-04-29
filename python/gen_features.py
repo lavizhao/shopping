@@ -194,10 +194,19 @@ def get_customer_class(conf,ctype,offers):
             bought_company_30 = 0
 
             #feature 20 :总共的购买记录
-            total_bought = len(result)
+            #if len(result) > 300:
+            #    total_bought = 1
+            #else:
+            #    total_bought = 0
 
+            #feature 27 : .... 小于0的
+            bought_company_category_brand_0 = 0
+            #feature 30 : 小于 1的
+            bought_company_category_brand_1 = 0
             #feature 21 : ... 5
             bought_company_category_brand_5 = 0
+            #feature 28 : .... 小于10的
+            bought_company_category_brand_10 = 0
             #feature 22 :买过这个company category brand 且日期小于15天的
             bought_company_category_brand_15 = 0
             #feature 23 :买过这个company category brand 且日期小于30天的
@@ -208,9 +217,16 @@ def get_customer_class(conf,ctype,offers):
             bought_company_category_brand_90 = 0
             #feature 26 :  120
             bought_company_category_brand_120 = 0
+
+            #feature 31 : 买过这个category brand且日期小于10天的
+            bought_brand_category_10 = 0
+
+            #feature 29 :平均花钱数目
+            avg_amount = 0 
             
             for one_search in result:
                 date_diff_days = diff_days(one_search[7],customer_date)
+                avg_amount += float(one_search[-1])
 
                 if one_search[5] == company_id :
                     bought_company_times += 1
@@ -248,12 +264,16 @@ def get_customer_class(conf,ctype,offers):
                     bought_company_brand += 1
 
                 if one_search[4] == category_id and one_search[6] == brand_id:
-                    bought_brand_category += 1    
+                    bought_brand_category += 1
 
                 if one_search[4] == category_id and one_search[5] == company_id and one_search[6] == brand_id:
                     bought_company_category_brand += 1
-                    if date_diff_days < 5:
+                    if date_diff_days < 1:
+                        bought_company_category_brand_1 += 1
+                    elif date_diff_days < 5:
                         bought_company_category_brand_5 += 1
+                    elif date_diff_days < 10:
+                        bought_company_category_brand_10 += 1
                     elif date_diff_days < 15:
                         bought_company_category_brand_15 += 1
                     elif date_diff_days < 30:
@@ -265,6 +285,7 @@ def get_customer_class(conf,ctype,offers):
                     elif date_diff_days < 120:
                         bought_company_category_brand_120 += 1
 
+            #avg_amount /= (len(result)+1)
 
             #feature 4,5: offer value offer quantity
                     
@@ -277,8 +298,10 @@ def get_customer_class(conf,ctype,offers):
                                      bought_company_category,bought_company_brand,\
                                      bought_brand_category,bought_company_category_brand,bought_category_5,bought_category_15,\
                                      bought_category_30,bought_category_60,bought_category_90,bought_category_120,\
-                                     bought_company_category_brand_5,bought_company_category_brand_15,bought_company_category_brand_30,bought_company_category_brand_60,\
-                                     bought_company_category_brand_90,bought_company_category_brand_120\
+                                     bought_company_category_brand_1,\
+                                     bought_company_category_brand_5,bought_company_category_brand_10,bought_company_category_brand_15,\
+                                     bought_company_category_brand_30,bought_company_category_brand_60,\
+                                     bought_company_category_brand_90,bought_company_category_brand_120,\
                                  ])+"\n")
             a += 1
             if a % 10000 == 0:

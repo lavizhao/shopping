@@ -10,6 +10,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn import preprocessing
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 
 def read_data(conf):
     #read train test y
@@ -61,11 +62,14 @@ def train_by_lr(conf,ctype):
     
     #clf = LogisticRegression(penalty='l2',dual=True,fit_intercept=False,C=2,tol=1e-9,class_weight=None, random_state=None, intercept_scaling=1.0)
     clf = GaussianNB()
+    #clf = GradientBoostingClassifier(n_estimators=400)
     #clf = RandomForestClassifier(n_estimators=40)
     #clf = SGDClassifier(loss="log", penalty="l2",alpha=0.1)
     if ctype == "cv":
         print "交叉验证"
-        print np.mean(cross_validation.cross_val_score(clf,train,y,cv=3,scoring='roc_auc',n_jobs=3))
+        hehe = cross_validation.cross_val_score(clf,train,y,cv=3,scoring='roc_auc',n_jobs=3)
+        print hehe
+        print np.mean(hehe)
 
     elif ctype =="predict":
         clf.fit(train,y)
