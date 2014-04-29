@@ -71,7 +71,7 @@ if __name__ == '__main__':
     print "hello"
 
     data_position_conf = config("../conf/data_position.conf")
-    drop_table()
+    #drop_table()
     create_db()
     create_trans_table()
     insert_trans(data_position_conf)
