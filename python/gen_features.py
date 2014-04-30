@@ -78,6 +78,7 @@ class customer:
             return 0
         
     def __str__(self):
+
         return "id: "+self.id
 
     def feature_string(self):
@@ -229,10 +230,9 @@ def get_customer_class(conf,ctype,offers):
             #feature 29 :平均花钱数目
             avg_amount = 0
             
-            #feature 32,33,34:关于周末
-            bought_in_saturday = 0
-            bought_in_sunday = 0
+            #feature 32:关于周末
             bought_in_weekend = 0
+            #bought_in_weekday = 0
             
             for one_search in result:
                 date_diff_days = diff_days(one_search[7],customer_date)
@@ -298,15 +298,10 @@ def get_customer_class(conf,ctype,offers):
             #avg_amount /= (len(result)+1)
                 
                 weekday = get_weekday(one_search[7])
-                if weekday == 6:
-                    bought_in_saturday += 1
+                if weekday == 5 or weekday == 6 or weekday == 7:
                     bought_in_weekend += 1
-                elif weekday == 7:
-                    bought_in_sunday += 1
-                    bought_in_weekend += 1
-                elif weekday == 5:
-                    bought_in_weekend += 1
-
+                #if weekday != 6 and weekday != 7:
+                #    bought_in_weekday += 1
             #feature 4,5: offer value offer quantity
                     
             #this_customer = customer(cid,bought_company_times,bought_brand_times,bought_category_times,this_offer.offer_value,this_offer.quantity,bought_company_quantity\
