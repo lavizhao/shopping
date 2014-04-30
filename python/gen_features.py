@@ -232,7 +232,8 @@ def get_customer_class(conf,ctype,offers):
             
             #feature 32:关于周末
             bought_in_weekend = 0
-            #bought_in_weekday = 0
+            bought_in_weekday = 0
+            #get_offer_in_weekend = 0
             
             for one_search in result:
                 date_diff_days = diff_days(one_search[7],customer_date)
@@ -298,10 +299,14 @@ def get_customer_class(conf,ctype,offers):
             #avg_amount /= (len(result)+1)
                 
                 weekday = get_weekday(one_search[7])
-                if weekday == 5 or weekday == 6 or weekday == 7:
+                if weekday == 6 or weekday == 7:
                     bought_in_weekend += 1
-                #if weekday != 6 and weekday != 7:
-                #    bought_in_weekday += 1
+                if weekday != 6 and weekday != 7:
+                    bought_in_weekday += 1
+                    
+                #temp_offer_day = get_weekday(customer_date)
+                #if temp_offer_day == 5 or temp_offer_day == 6 or temp_offer_day == 7 :
+                #    get_offer_in_weekend += 1
             #feature 4,5: offer value offer quantity
                     
             #this_customer = customer(cid,bought_company_times,bought_brand_times,bought_category_times,this_offer.offer_value,this_offer.quantity,bought_company_quantity\
@@ -317,7 +322,7 @@ def get_customer_class(conf,ctype,offers):
                                      bought_company_category_brand_5,bought_company_category_brand_10,bought_company_category_brand_15,\
                                      bought_company_category_brand_30,bought_company_category_brand_60,\
                                      bought_company_category_brand_90,bought_company_category_brand_120,\
-                                     bought_in_weekend\
+                                     bought_in_weekend,bought_in_weekday\ #,get_offer_in_weekend\
                                  ])+"\n")
             a += 1
             if a % 10000 == 0:
