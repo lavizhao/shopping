@@ -322,8 +322,9 @@ def get_customer_class(conf,ctype,offers):
                                      bought_company_category_brand_5,bought_company_category_brand_10,bought_company_category_brand_15,\
                                      bought_company_category_brand_30,bought_company_category_brand_60,\
                                      bought_company_category_brand_90,bought_company_category_brand_120,\
-                                     bought_in_weekend,bought_in_weekday\ #,get_offer_in_weekend\
+                                     bought_in_weekend,bought_in_weekday\
                                  ])+"\n")
+            #,get_offer_in_weekend\
             a += 1
             if a % 10000 == 0:
                 print a

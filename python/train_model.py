@@ -11,6 +11,7 @@ from sklearn import preprocessing
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.decomposition import PCA
 
 def read_data(conf):
     #read train test y
@@ -55,10 +56,19 @@ def train_by_lr(conf,ctype):
     train,test,y,test_label = read_data(conf)
     train,test,y = np.array(train),np.array(test),np.array(y)
 
-    #print "norm"
-    #scaler = preprocessing.StandardScaler().fit(train)
-    #train = scaler.transform(train)
-    #test = scaler.transform(test)
+    print "train shape",train.shape
+    print "test shape",test.shape
+
+    print "norm"
+    scaler = preprocessing.StandardScaler().fit(train)
+    train = scaler.transform(train)
+    test = scaler.transform(test)
+
+    print "pca"
+    pca = PCA(n_components=24,whiten=True)
+    pca.fit(train)
+    train = pca.transform(train)
+    test = pca.transform(test)
     
     #clf = LogisticRegression(penalty='l2',dual=True,fit_intercept=False,C=2,tol=1e-9,class_weight=None, random_state=None, intercept_scaling=1.0)
     clf = GaussianNB()
