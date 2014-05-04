@@ -12,6 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.decomposition import PCA
+from sklearn.lda import LDA
 
 def read_data(conf):
     #read train test y
@@ -69,11 +70,13 @@ def train_by_lr(conf,ctype):
     pca.fit(train)
     train = pca.transform(train)
     test = pca.transform(test)
-    
+
     #clf = LogisticRegression(penalty='l2',dual=True,fit_intercept=False,C=2,tol=1e-9,class_weight=None, random_state=None, intercept_scaling=1.0)
     clf = GaussianNB()
+    #clf = MultinomialNB()
     #clf = GradientBoostingClassifier(n_estimators=400)
-    #clf = RandomForestClassifier(n_estimators=40)
+    #clf = RandomForestClassifier(n_estimators=400)
+    #clf = RandomForestClassifier(n_estimators=100,max_depth=8,min_samples_leaf=4,n_jobs=3)
     #clf = SGDClassifier(loss="log", penalty="l2",alpha=0.1)
     if ctype == "cv":
         print "交叉验证"
@@ -99,5 +102,5 @@ if __name__ == '__main__':
     print "hello"
     data_position_conf = config("../conf/data_position.conf")
 
-    train_by_lr(data_position_conf,"predict")
-    #train_by_lr(data_position_conf,"cv")
+    #train_by_lr(data_position_conf,"predict")
+    train_by_lr(data_position_conf,"cv")
