@@ -62,10 +62,9 @@ def search_table(cid):
 def search_table_with_ccb(category,company,brand):
     conn.select_db('shopping')
     cur = conn.cursor()
-    count = cur.execute('select productmeasure from trans where category = "%s" and \
+    count = cour.execute('select productmeasure from trans where category = "%s" and \
                           company = "%s" and brand = "%s"'%(category,company,brand))
-    result = cur.fetchone()
-    return result[0]
+    return cur.fetchone(count)
     
 def build_index():
     conn.select_db('shopping')

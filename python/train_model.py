@@ -13,6 +13,7 @@ from sklearn.linear_model import SGDClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.decomposition import PCA
 from sklearn.lda import LDA
+from sklearn import svm
 
 def read_data(conf):
     #read train test y
@@ -66,7 +67,7 @@ def train_by_lr(conf,ctype):
     test = scaler.transform(test)
 
     print "pca"
-    pca = PCA(n_components=24,whiten=True)
+    pca = PCA(n_components=23,whiten=True)
     pca.fit(train)
     train = pca.transform(train)
     test = pca.transform(test)
@@ -78,9 +79,10 @@ def train_by_lr(conf,ctype):
     #clf = RandomForestClassifier(n_estimators=400)
     #clf = RandomForestClassifier(n_estimators=100,max_depth=8,min_samples_leaf=4,n_jobs=3)
     #clf = SGDClassifier(loss="log", penalty="l2",alpha=0.1)
+    #clf = svm.SVC(C = 1.0, kernel = 'rbf', probability = True)
     if ctype == "cv":
         print "交叉验证"
-        hehe = cross_validation.cross_val_score(clf,train,y,cv=3,scoring='roc_auc',n_jobs=3)
+        hehe = cross_validation.cross_val_score(clf,train,y,cv=3,scoring='roc_auc',n_jobs=-1)
         print hehe
         print np.mean(hehe)
 
@@ -102,5 +104,5 @@ if __name__ == '__main__':
     print "hello"
     data_position_conf = config("../conf/data_position.conf")
 
-    #train_by_lr(data_position_conf,"predict")
-    train_by_lr(data_position_conf,"cv")
+    train_by_lr(data_position_conf,"predict")
+    #train_by_lr(data_position_conf,"cv")

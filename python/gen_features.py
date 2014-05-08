@@ -20,6 +20,7 @@ class offer:
         self.company = line[3]
         self.offer_value = line[4]
         self.brand = line[5]
+        self.pm = line[-1]
 
     def __str__(self):
         return 'offer_id: '+self.offer_id+"\ncategory: "+self.category+\
@@ -28,7 +29,7 @@ class offer:
         
 def read_offer(conf):
     offers = {}        
-    f = open(conf["offer_dir"])        
+    f = open(conf["offer_pm_dir"])        
     reader = csv.reader(f)
     a = 0
     for line in reader:
@@ -234,6 +235,14 @@ def get_customer_class(conf,ctype,offers):
             bought_in_weekend = 0
             bought_in_weekday = 0
             #get_offer_in_weekend = 0
+
+            #feature 33:关于年末购物季
+            bought_in_vacation = 0
+            date_format = "%Y-%m-%d"
+            fbd = datetime.strptime("2012-11-23",date_format)
+            fed = datetime.strptime("2013-01-05",date_format)
+            sbd = datetime.strptime("2013-11-29",date_format)
+            sed = datetime.strptime("2014-01-05",date_format)
             
             for one_search in result:
                 date_diff_days = diff_days(one_search[7],customer_date)
@@ -277,7 +286,7 @@ def get_customer_class(conf,ctype,offers):
                 if one_search[4] == category_id and one_search[6] == brand_id:
                     bought_brand_category += 1
 
-                if one_search[4] == category_id and one_search[5] == company_id and one_search[6] == brand_id:
+                if one_search[4] == category_id and one_search[5] == company_id and one_search[6] == brand_id:                   
                     bought_company_category_brand += 1
                     if date_diff_days < 1:
                         bought_company_category_brand_1 += 1
@@ -303,6 +312,10 @@ def get_customer_class(conf,ctype,offers):
                     bought_in_weekend += 1
                 if weekday != 6 and weekday != 7:
                     bought_in_weekday += 1
+
+                bought_date = datetime.strptime(one_search[7],date_format)
+                if (bought_date >= fbd and bought_date <= fed) or (bought_date >= sbd and bought_date <= sed):
+                    bought_in_vacation += 1
                     
                 #temp_offer_day = get_weekday(customer_date)
                 #if temp_offer_day == 5 or temp_offer_day == 6 or temp_offer_day == 7 :
@@ -322,7 +335,7 @@ def get_customer_class(conf,ctype,offers):
                                      bought_company_category_brand_5,bought_company_category_brand_10,bought_company_category_brand_15,\
                                      bought_company_category_brand_30,bought_company_category_brand_60,\
                                      bought_company_category_brand_90,bought_company_category_brand_120,\
-                                     bought_in_weekend,bought_in_weekday\
+                                     bought_in_weekend,bought_in_weekday,bought_in_vacation\
                                  ])+"\n")
             #,get_offer_in_weekend\
             a += 1
