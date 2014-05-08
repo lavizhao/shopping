@@ -104,5 +104,5 @@ if __name__ == '__main__':
     print "hello"
     data_position_conf = config("../conf/data_position.conf")
 
-    train_by_lr(data_position_conf,"predict")
-    #train_by_lr(data_position_conf,"cv")
+    #train_by_lr(data_position_conf,"predict")
+    train_by_lr(data_position_conf,"cv")

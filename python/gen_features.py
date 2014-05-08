@@ -243,6 +243,20 @@ def get_customer_class(conf,ctype,offers):
             fed = datetime.strptime("2013-01-05",date_format)
             sbd = datetime.strptime("2013-11-29",date_format)
             sed = datetime.strptime("2014-01-05",date_format)
+
+            #feature 34:关于productmeasure的尝试
+            pm_code = 0
+            if this_offer.pm == 'LT':
+                pm_code = 1
+            elif this_offer.pm == 'CT':
+                pm_code = 2
+            elif this_offer.pm == 'OZ':
+                pm_code = 3
+            elif this_offer.pm == 'RL':
+                pm_code = 4
+            elif this_offer.pm == 'LB':
+                pm_code = 5
+            
             
             for one_search in result:
                 date_diff_days = diff_days(one_search[7],customer_date)
